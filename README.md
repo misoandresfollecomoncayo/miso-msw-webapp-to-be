@@ -81,7 +81,8 @@ A cada cliente se le asigna un casillero virtual (un código) vinculado a la dir
 * Gestión de inventario: Controla el inventario en bodega mediante operaciones CRUD; cada artículo queda vinculado al cliente/casillero propietario.
 * Reportes: Ofrece informes de agente de compras, clientes por país, inventario, movimiento diario, pagos de ventas y recepción de mercancía, cada uno con sus propios parámetros y filtros.
 
-### Líneas de código fuente
+### Líneas de código fuente
 
 La aplicación está compuesta por 21.997 líneas de código PHP, superando holgadamente el mínimo de 2.000 líneas establecido por el curso como requisito de tamaño.
 
+<img width="758" height="181" alt="image" src="https://github.com/user-attachments/assets/e8d0e29a-f329-4bca-9d86-57f268200cc3" />
