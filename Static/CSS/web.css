@@ -1,0 +1,201 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    padding-top: 99px;
+}
+
+.logotipo {
+    background-image: url(../Images/logotype-white.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+    height: 96px;
+    width: 200px;
+}
+
+.main-bar {
+    background-color: #c2000b;
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+}
+
+.main-bar-item {
+    transition: .25s all;
+}
+
+.banner {
+    background-image: url(../Images/Web/mt_slider_trucking02.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+}
+
+.background-color-red-uniexpress {
+    background-color: #c2000b;
+}
+
+.text-size-70px {
+    font-size: 70px !important;
+}
+
+.background-stores {
+    background-color: rgba(35, 35, 49, 0.9);
+}
+
+.image-section {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    height: 548px;
+}
+
+.map {
+    height: 450px;
+}
+
+.mobile-menu-button {
+    display: none;
+    line-height: 99px;
+    height: 99px;
+}
+
+.mobile-menu {
+    display: none;
+}
+
+.store {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 170px;
+    transition: background-size .35s;
+}
+
+.store:hover {
+    background-size: 210px !important;
+}
+
+.input-text-underline {
+    background-color: rgba(255,255,255,.2);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    resize: none;
+    width: 100%;
+}
+
+.input-textarea {
+    height: 100px;
+}
+
+button {
+    border: none;
+}
+
+.whatsapp {
+    align-items: center;
+    background: #25d366;
+    border-radius: 100px;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,.25);
+    color: white;
+    display: inline-flex;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 30px;
+    text-decoration: none;
+    white-space: nowrap;
+    z-index: 50000;
+}
+
+.whatsapp > i {
+    color: white;
+    font-size: 25px;
+}
+
+.giveaway {
+    align-items: center;
+    background: #0095ff;
+    border-radius: 100px;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,.25);
+    color: white;
+    display: inline-flex;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 30px;    
+    text-decoration: none;
+    white-space: nowrap;
+    z-index: 50000;
+}
+
+.social {
+    align-items: center;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.social > .link {
+    align-items: center;
+    border-radius: 100%;
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    text-decoration: none;
+    width: 50px;
+}
+
+.social > .link:first-child {
+    margin-right: 20px;
+}
+
+.social > .link > i {
+    color: white;
+    font-size: 25px;
+}
+
+.spinner {
+    animation: spinner-animation 0.4s linear infinite;
+    border: 4px solid;
+    border-bottom-color: rgba(255,255,255,0.15);
+    border-left-color: rgba(255,255,255,1);
+    border-radius: 100%;
+    border-right-color: rgba(255,255,255,0.15);
+    border-top-color: rgba(255,255,255,1);
+    display: inline-block;
+    height: 35px;
+    left: 50%;
+    margin-left: -17px;
+    margin-top: -17px;
+    position: absolute;
+    top: 50%;
+    width: 35px;
+    -webkit-animation: spinner-animation 0.4s linear infinite;
+}
+
+@keyframes spinner-animation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+@-webkit-keyframes spinner-animation {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+@media(max-width: 414px) {
+    body {
+        padding-top: 96px;
+    }
+    
+    .mobile-menu-button {
+        display: inline-block;
+        position: absolute;
+        left: calc(100% - 50px);
+        top: 0;
+    }
+}

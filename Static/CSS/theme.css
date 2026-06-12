@@ -1,0 +1,419 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+ 
+::-webkit-scrollbar-track {
+    background:	rgba(0,0,0,.15);
+}
+ 
+::-webkit-scrollbar-thumb {
+    background:	rgba(0,0,0,.25);
+}
+
+table.dataTable thead th, table.dataTable thead td {
+    padding: 10px 0 !important;
+}
+
+.text-color-yellow {
+    color: #ffc107;
+}
+
+.text-color-green {
+    color: #4caf50;
+}
+
+.text-color-orange {
+    color: #ff9800;
+}
+
+.logotype {
+    background-image: url(../Images/logotype.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.canvas-width {
+    width: calc(100% - 240px);
+}
+
+.canvas-height {
+    height: calc(100% - 55px);
+}
+
+.session-bar {
+    line-height: 55px;
+}
+
+.main-bar {
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.35);
+    height: 100%;
+    left: 0;
+    position: relative;
+    overflow: hidden;
+    width: 240px;
+}
+
+.main-bar:hover {
+    overflow: auto;
+}
+
+.main-bar > div > .logotype {
+    height: 70px;
+    width: 100%;
+}
+
+.main-bar > .locker {
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+
+.main-bar > .item {
+    color: #333;
+    display: inline-block;
+    font-size: 14px;
+    padding: 15px;
+    text-decoration: none;
+    transition: background-color .2s;
+    width: 100%;
+}
+
+.main-bar > .item > i {
+    color: #333;
+    font-size: 14px;
+    margin-right: 15px;
+    text-align: center;
+    width: 25px;
+}
+
+.main-bar > .item > .counter {
+    background-color: #f44336;
+    border-radius: 3px;
+    color: white;
+    float: right;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 5px;
+}
+
+.main-bar > .selected {
+    background-color: #eee;
+    box-shadow: inset 3px 0 0 0 #c2000b;
+    cursor: default;
+    font-weight: bold;
+}
+
+.button-green-excel {
+    background-color: #1a7243;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.25);
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    transition: .25s background-color;
+}
+
+.button-green-excel:hover {
+    background-color: #144f2f;
+}
+
+.button-green-excel:disabled {
+    color: white;
+    background: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.button-blue {
+    background-color: #3949AB;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.25);
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    transition: .25s background-color;
+}
+
+.button-blue:hover {
+    background-color: #25338a;
+}
+
+.button-red {
+    background-color: #c2000b;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.25);
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    transition: .25s background-color;
+}
+
+.button-red:hover {
+    background-color: #a5000b;
+}
+
+.button-red:disabled {
+    color: white;
+    background: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.button-white {
+    background-color: transparent;
+    border:none;
+    border-radius: 3px;
+    color: #666;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    transition: all .15s;
+}
+
+.button-white:hover {
+    background-color: #eee;
+}
+
+.button-gray {
+    background-color: #eee;
+    border:none;
+    border-radius: 3px;
+    color: #666;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px;
+    transition: all .15s;
+}
+
+.background-color-red-uniexpress {
+    background-color: #c2000b;
+}
+
+.label-underline {
+    border-bottom: 1px solid lightgray;
+    padding: 5px 0;
+}
+
+.input-text-underline {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid lightgray;
+    padding: 5px 0;
+    transition: .15s border-bottom;
+    width: 100%;
+}
+
+.input-text-underline:focus {
+    border-bottom: 2px solid #c2000b;
+}
+
+.select-underline {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid lightgray;
+    padding: 5px 0;
+    transition: .15s border-bottom;
+    width: 100%;
+}
+
+.select-underline:focus {
+    border-bottom: 2px solid #c2000b;
+}
+
+.spinner {
+    animation: spinner-animation 0.4s linear infinite;
+    border: 4px solid;
+    border-bottom-color: rgba(255,255,255,0.15);
+    border-left-color: rgba(255,255,255,1);
+    border-radius: 100%;
+    border-right-color: rgba(255,255,255,0.15);
+    border-top-color: rgba(255,255,255,1);
+    display: inline-block;
+    height: 35px;
+    left: 50%;
+    margin-left: -17px;
+    margin-top: -17px;
+    position: absolute;
+    top: 50%;
+    width: 35px;
+    -webkit-animation: spinner-animation 0.4s linear infinite;
+}
+
+table > tbody > tr > td > button {
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    transition: .25s all;
+    width: 30px;
+}
+
+table > tbody > tr > td > button:hover {
+    background: #ccc;
+}
+
+.context-menu {
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.5);
+    position: fixed;
+}
+
+.context-menu > div {
+    cursor: pointer;
+    padding: 10px;
+    transition: .25s all;
+}
+
+.context-menu > div:hover {
+    background: #ddd;
+}
+
+@keyframes spinner-animation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+@-webkit-keyframes spinner-animation {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+.black-overlay {
+    background-color: rgba(0,0,0,.5);
+    cursor: pointer;
+    display: none;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+.popup-background {
+    background-color: rgba(0,0,0,.5);
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    overflow: auto;
+    padding: 50px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+.popup {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 15px 15px 0 rgba(0,0,0,.25);
+    cursor: default;
+    padding: 25px;
+    width: 500px;
+}
+
+.messagebox {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 15px 15px 0 rgba(0,0,0,.25);
+    cursor: default;
+    display: table;
+    padding: 25px;
+    max-width: 500px;
+}
+
+.new-customer-tab {
+    border-bottom: 3px #c2000b solid;
+}
+
+.profile-tab {
+    border-bottom: 3px #c2000b solid;
+}
+
+.pagination {
+    display: flex;
+}
+
+.pagination > button {
+    align-items: center;
+    background: rgba(0,0,0,.05);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    height: 35px;
+    justify-content: center;
+    margin-left: 5px;
+    width: 35px;
+}
+
+.pagination > button:hover {
+    background: rgba(0,0,0,.25);
+}
+
+.pagination > button:first-child {
+    margin: 0;
+}
+
+.pagination > .selected {
+    background: rgba(0,0,0,.25) !important;
+}
+
+@media(max-width: 428px) {
+    .main-bar {
+        box-shadow: none;
+        left: -240px;
+        position: fixed;
+        overflow: auto;
+        z-index: 11000;
+    }
+    
+    .open-main-bar {
+        box-shadow: 0 0 10px 0 rgba(0,0,0,.5);
+        left: 0px !important;
+        transition: all .3s;
+    }
+
+    .close-main-bar {
+        box-shadow: none;
+        left: -240px !important;
+        transition: all .3s;
+    }
+    
+    .new-customer-tab {
+        border: none;
+        border-left: 3px #c2000b solid;
+    }
+    
+    .popup-background {
+        padding: 10px;
+    }
+    
+    .popup {
+        width: 100%;
+    }
+}
