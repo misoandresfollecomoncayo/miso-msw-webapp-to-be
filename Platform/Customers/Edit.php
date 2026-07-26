@@ -15,7 +15,10 @@
         header("location:" . PUBLIC_PATH_PLATFORM . "Logout.php");
     }
     
-    $customer = CustomerDAO::getCustomerById(CloudEngineHTTP::getPostVar("IdCustomer"));
+    // Precarga del formulario desde el microservicio nuevo (Strangler Fig).
+    // El guardado (API/Customer/Edit.php) ya va a la API nueva; esta lectura
+    // reconstruye el objeto Customer desde GET /api/customers/{id}.
+    $customer = MswApiClient::customerModelFromApi(CloudEngineHTTP::getPostVar("IdCustomer"));
     
     if ($customer == null) {
         header("location:" . PUBLIC_PATH_PLATFORM . "Customers");

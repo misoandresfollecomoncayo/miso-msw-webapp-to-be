@@ -14,39 +14,54 @@ $service->addParameterObj(new CloudEngineWebServiceParameterInteger("draw", 11, 
 $service->addParameterObj(new CloudEngineWebServiceParameterInteger("start", 11, true));
 $service->addParameterObj(new CloudEngineWebServiceParameterInteger("length", 11, true));
 $service->setCallback(function() use ($service) {
-    $customers = CustomerDAO::getCustomersDataTables($service->getParameter("start")->getValue(),$service->getParameter("length")->getValue(),$_REQUEST["search"]["value"]);
-    $response = array();
-    
-    foreach ($customers as $c) {
+    // ADAPTER -> microservicio nuevo (GET /api/customers?page=&limit=&search=).
+    // Se reconstruye EXACTAMENTE el formato server-side de DataTables (HTML embebido)
+    // que espera el frontend. Los data-id ahora son los UUID de la API nueva, con lo
+    // que Editar/Eliminar/Activar/Desactivar operan de forma consistente contra ella.
+    $draw   = intval($service->getParameter("draw")->getValue());
+    $start  = intval($service->getParameter("start")->getValue());
+    $length = intval($service->getParameter("length")->getValue());
+    $search = isset($_REQUEST["search"]["value"]) ? $_REQUEST["search"]["value"] : "";
+    $page   = ($length > 0) ? (intval($start / $length) + 1) : 1;
+
+    $res  = MswApiClient::request("GET", "/api/customers?page=" . $page . "&limit=" . $length . "&search=" . rawurlencode($search));
+    $rows = (MswApiClient::isOk($res) && isset($res["body"]["data"])) ? $res["body"]["data"] : array();
+    $total = (MswApiClient::isOk($res) && isset($res["body"]["meta"]["total"])) ? intval($res["body"]["meta"]["total"]) : count($rows);
+
+    $data = array();
+    foreach ($rows as $c) {
+        $loc          = MswApiClient::resolveCountryCity($c["cityId"]);
+        $isActive     = !empty($c["active"]);
+        $activeColor  = $isActive ? "background-color-green" : "background-color-red";
+        $activeString = $isActive ? "ACTIVO" : "INACTIVO";
+        $id           = $c["id"];
+
         $options = "";
-        
-        if ($c->isActive()) {
-            $options .= "<div name='btnInactive' data-id='" . $c->getIdCustomer() . "' class='text-align-center text-decoration-underline cursor-pointer'>Desactivar</div>";
+        if ($isActive) {
+            $options .= "<div name='btnInactive' data-id='" . $id . "' class='text-align-center text-decoration-underline cursor-pointer'>Desactivar</div>";
         } else {
-            $options .= "<div name='btnActive' data-id='" . $c->getIdCustomer() . "' class='text-align-center text-decoration-underline cursor-pointer'>Activar</div>";
+            $options .= "<div name='btnActive' data-id='" . $id . "' class='text-align-center text-decoration-underline cursor-pointer'>Activar</div>";
         }
-        
-        //$options .= "<div name='btnEdit' data-id='" . $c->getIdCustomer() . "' class='text-align-center text-decoration-underline cursor-pointer'>Ver</div>";
-        $options .= "<div name='btnDelete' data-id='" . $c->getIdCustomer() . "' class='text-align-center text-decoration-underline cursor-pointer'>Eliminar</div>";
-        
-        array_push($response, [
-            "<div class='text-align-center'>" . $c->getLockerNumber() . "</div>",
-            "<div class='cursor-pointer text-decoration-underline' name='btnEdit' data-id='" . $c->getIdCustomer() . "'>" . $c->getNames() . "</div>",
-            $c->getEmail(),
-            "<div class='text-align-center'>" . $c->getCity()->getCountry()->getName() . "</div>",
-            "<div class='text-align-center'>" . $c->getCity()->getName() . "</div>",
-            "<div class='text-align-center padding text-size-xs text-color-white text-weight-bold border-radius " . $c->getActiveColor() . "'>" . $c->getActiveString() . "</div>",            
+        $options .= "<div name='btnDelete' data-id='" . $id . "' class='text-align-center text-decoration-underline cursor-pointer'>Eliminar</div>";
+
+        array_push($data, array(
+            "<div class='text-align-center'>" . $c["lockerNumber"] . "</div>",
+            "<div class='cursor-pointer text-decoration-underline' name='btnEdit' data-id='" . $id . "'>" . $c["names"] . "</div>",
+            $c["email"],
+            "<div class='text-align-center'>" . $loc["country"] . "</div>",
+            "<div class='text-align-center'>" . $loc["city"] . "</div>",
+            "<div class='text-align-center padding text-size-xs text-color-white text-weight-bold border-radius " . $activeColor . "'>" . $activeString . "</div>",
             $options
-        ]);
+        ));
     }
-    
+
     $service->setResponse(
-        json_encode([
-            "draw" => intval($service->getParameter("draw")->getValue()),
-            "recordsTotal" => intval(CustomerDAO::getRecordsTotal()),
-            "recordsFiltered" => intval(CustomerDAO::getRecordsFiltered($_REQUEST["search"]["value"])),
-            "data" => $response
-        ])
+        json_encode(array(
+            "draw"            => $draw,
+            "recordsTotal"    => $total,
+            "recordsFiltered" => $total,
+            "data"            => $data
+        ))
     );
 });
 $service->publish();

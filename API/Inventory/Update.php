@@ -1,15 +1,9 @@
 <?php
 
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', 1);
-
 require_once $_SERVER["DOCUMENT_ROOT"] . '/UniexpressAutoload.php';
 
 use Cloud\Engine\PHP\WebService\CloudEngineWebService;
 use Cloud\Engine\PHP\WebService\CloudEngineWebServiceParameterText;
-use Cloud\Engine\PHP\WebService\CloudEngineWebServiceParameterDate;
-use Cloud\Engine\PHP\WebService\CloudEngineWebServiceParameterEmail;
-use Cloud\Engine\PHP\WebService\CloudEngineWebServiceParameterBoolean;
 use Cloud\Engine\PHP\HTTP\CloudEngineSession;
 
 $service = new CloudEngineWebService();
@@ -25,22 +19,21 @@ $service->addParameterObj(new CloudEngineWebServiceParameterText("TotalCost", 18
 $service->addParameterObj(new CloudEngineWebServiceParameterText("SalePrice", 18, true));
 $service->addParameterObj(new CloudEngineWebServiceParameterText("Utility", 18, true));
 $service->setCallback(function() use ($service) {
-    try {
-        InventoryDAO::update(
-            $service->getParameter("Id")->getValue(),
-            $service->getParameter("Product")->getValue(),
-            $service->getParameter("TRM")->getValue(),
-            $service->getParameter("USDPrice")->getValue(),
-            $service->getParameter("COPPrice")->getValue(),
-            $service->getParameter("InternationalShippingPrice")->getValue(),
-            $service->getParameter("NationalShippingPrice")->getValue(),
-            $service->getParameter("TotalCost")->getValue(),
-            $service->getParameter("SalePrice")->getValue(),
-            $service->getParameter("Utility")->getValue()
-        );
+    // ADAPTER -> microservicio nuevo (PUT /api/inventory/{id}). Frontend sin cambios.
+    $id = $service->getParameter("Id")->getValue();
+    $body = array(
+        "product"           => $service->getParameter("Product")->getValue(),
+        "trm"               => floatval($service->getParameter("TRM")->getValue()),
+        "usdPrice"          => floatval($service->getParameter("USDPrice")->getValue()),
+        "intlShippingPrice" => floatval($service->getParameter("InternationalShippingPrice")->getValue()),
+        "natShippingPrice"  => floatval($service->getParameter("NationalShippingPrice")->getValue()),
+        "salePrice"         => floatval($service->getParameter("SalePrice")->getValue())
+    );
+    $res = MswApiClient::request("PUT", "/api/inventory/" . rawurlencode($id), $body);
+    if (MswApiClient::isOk($res)) {
         $service->setResponse("Registro almacenado correctamente.");
-    } catch (Exception $ex) {
-        $service->setException($ex->getMessage());
+    } else {
+        $service->setException(MswApiClient::errorMessage($res, "No se pudo almacenar el registro."));
     }
 });
 $service->publish();

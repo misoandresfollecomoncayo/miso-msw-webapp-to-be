@@ -25,25 +25,30 @@ $service->addParameterObj(new CloudEngineWebServiceParameterEmail("Email", true)
 $service->addParameterObj(new CloudEngineWebServiceParameterText("Password", 128, true));
 $service->addParameterObj(new CloudEngineWebServiceParameterBoolean("Notify", false));
 $service->setCallback(function() use ($service) {
-    try {
-        CustomerDAO::createFromAdministrator(
-            $service->getParameter("Names")->getValue(),
-            $service->getParameter("Gender")->getValue(),
-            $service->getParameter("Birthdate")->getValue(),
-            $service->getParameter("Language")->getValue(),
-            $service->getParameter("IdDocumentType")->getValue(),
-            $service->getParameter("DocumentNumber")->getValue(),
-            $service->getParameter("IdCity")->getValue(),
-            $service->getParameter("Address")->getValue(),
-            $service->getParameter("Telephone")->getValue(),
-            $service->getParameter("Telephone2")->getValue(),
-            $service->getParameter("Email")->getValue(),
-            $service->getParameter("Password")->getValue(),
-            $service->getParameter("Notify")->getValue()
-        );
+    // ADAPTER -> microservicio nuevo (POST /api/customers). Frontend sin cambios.
+    $body = array(
+        "names"          => $service->getParameter("Names")->getValue(),
+        "gender"         => MswApiClient::genderToApi($service->getParameter("Gender")->getValue()),
+        "birthdate"      => MswApiClient::toIsoDate($service->getParameter("Birthdate")->getValue()),
+        "language"       => MswApiClient::languageToApi($service->getParameter("Language")->getValue()),
+        "documentType"   => MswApiClient::documentTypeToApi($service->getParameter("IdDocumentType")->getValue()),
+        "documentNumber" => $service->getParameter("DocumentNumber")->getValue(),
+        "cityId"         => MswApiClient::cityIdToApi($service->getParameter("IdCity")->getValue()),
+        "address"        => $service->getParameter("Address")->getValue(),
+        "telephone"      => $service->getParameter("Telephone")->getValue(),
+        "email"          => $service->getParameter("Email")->getValue()
+    );
+    $telephone2 = $service->getParameter("Telephone2")->getValue();
+    if (!empty($telephone2)) {
+        $body["telephone2"] = $telephone2;
+    }
+    // Password/Notify no forman parte del contrato de la API nueva.
+
+    $res = MswApiClient::request("POST", "/api/customers", $body);
+    if (MswApiClient::isOk($res)) {
         $service->setResponse("Cliente creado correctamente.");
-    } catch (Exception $ex) {
-        $service->setException($ex->getMessage());
+    } else {
+        $service->setException(MswApiClient::errorMessage($res, "No se pudo crear el cliente."));
     }
 });
 $service->publish();

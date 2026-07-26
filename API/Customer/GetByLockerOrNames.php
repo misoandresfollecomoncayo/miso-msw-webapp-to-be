@@ -9,20 +9,24 @@ $service = new CloudEngineWebService();
 $service->setMethod(CloudEngineWebService::METHOD_REQUEST);
 $service->addParameterObj(new CloudEngineWebServiceParameterText("Search", 256, true));
 $service->setCallback(function() use ($service) {
-    $customers = CustomerDAO::getCustomersByLockerOrNames($service->getParameter("Search")->getValue());
-    if (count($customers) > 0) {
+    // ADAPTER -> microservicio nuevo (GET /api/customers?search=). Misma forma de respuesta.
+    $search = $service->getParameter("Search")->getValue();
+    $res  = MswApiClient::request("GET", "/api/customers?limit=100&search=" . rawurlencode($search));
+    $rows = (MswApiClient::isOk($res) && isset($res["body"]["data"])) ? $res["body"]["data"] : array();
+    if (count($rows) > 0) {
         $response = array();
-        foreach ($customers as $customer) {
-            array_push($response, [
-                "names" => $customer->getNames(),
-                "email" => $customer->getEmail(),
-                "country" => $customer->getCity()->getCountry()->getName(),
-                "city" => $customer->getCity()->getName(),
-                "address" => $customer->getAddress(),
-                "phone" => $customer->getTelephone(),
-                "phone2" => $customer->getTelephone2(),
-                "lockerNumber" => $customer->getLockerNumber()
-            ]);
+        foreach ($rows as $c) {
+            $loc = MswApiClient::resolveCountryCity($c["cityId"]);
+            array_push($response, array(
+                "names"        => $c["names"],
+                "email"        => $c["email"],
+                "country"      => $loc["country"],
+                "city"         => $loc["city"],
+                "address"      => $c["address"],
+                "phone"        => $c["telephone"],
+                "phone2"       => isset($c["telephone2"]) ? $c["telephone2"] : "",
+                "lockerNumber" => $c["lockerNumber"]
+            ));
         }
         $service->setResponse(json_encode($response));
     } else {
