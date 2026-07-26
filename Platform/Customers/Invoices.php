@@ -16,7 +16,7 @@
         header("location:" . PUBLIC_PATH_PLATFORM . "Logout.php");
     }
     
-    $customer = CustomerDAO::getCustomerById(CloudEngineHTTP::getPostVar("IdCustomer"));
+    $customer = MswApiClient::customerModelFromApi(CloudEngineHTTP::getPostVar("IdCustomer"));
     
     if ($customer == null) {
         header("location:" . PUBLIC_PATH_PLATFORM . "Customers");
